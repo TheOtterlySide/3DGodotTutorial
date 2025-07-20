@@ -19,7 +19,7 @@ public partial class Player : CharacterBody3D
 
     public override void _Ready()
     {
-        base._Ready();
+       Input.SetMouseMode(Input.MouseModeEnum.Captured);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -31,6 +31,7 @@ public partial class Player : CharacterBody3D
         //Camera
         RotateY(-camera_input.X * look_sensivity);
         camera.RotateX(-camera_input.Y * look_sensivity);
+        camera.Rotation = new Vector3((float)Mathf.Clamp(camera.Rotation.X, -1.5, 1.5),0,0);
         camera_input.Y = 0;
         
     }
