@@ -24,8 +24,20 @@ public partial class Player : CharacterBody3D
 
     public override void _PhysicsProcess(double delta)
     {
+        if (!IsOnFloor())
+        {
+            Velocity -= new Vector3(0, (float)(gravity.AsSingle() * delta) ,0); 
+        }
+
+        if (Input.IsActionPressed("jump") && IsOnFloor())
+        {
+            Velocity = new Vector3(0, jump_force ,0); 
+        }
+        
         var move_input = Input.GetVector("move_left", "move_right", "move_forward", "move_back");
-        Velocity = new Vector3(move_input.X, 0, move_input.Y) * max_speed;
+        var move_dir = Transform.Basis * new Vector3(move_input.X, move_input.Y, 0).Normalized();
+        
+        Velocity = move_dir * max_speed;
         MoveAndSlide();
         
         //Camera
