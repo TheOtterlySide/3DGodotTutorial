@@ -46,10 +46,25 @@ public partial class Player : CharacterBody3D
             target_speed = max_run_speed;
             var run_dot = -move_dir.Dot(Transform.Basis.Z);
             run_dot = Mathf.Clamp(run_dot, 0, 1);
-            move_dir *= run_dot;            
+            move_dir *= run_dot;
         }
 
-        Velocity = move_dir * target_speed;
+        var current_smoothing = acceleration;
+
+        if (!IsOnFloor())
+        {
+            current_smoothing = air_acceleration;
+        }
+
+        if (move_dir == Vector3.Zero)
+        {
+            current_smoothing = braking;
+        }
+
+        var targetVelocity = move_dir * target_speed;
+        Velocity = new Vector3((float)Mathf.Lerp(Velocity.X, targetVelocity.X, current_smoothing * delta),
+            (float)Mathf.Lerp(Velocity.Z, targetVelocity.Z, current_smoothing * delta),
+            0);
         MoveAndSlide();
 
         //Cameras
@@ -57,6 +72,19 @@ public partial class Player : CharacterBody3D
         camera.RotateX(-camera_input.Y * look_sensivity);
         camera.Rotation = new Vector3((float)Mathf.Clamp(camera.Rotation.X, -1.5, 1.5), 0, 0);
         camera_input.Y = 0;
+        
+        //Mouse
+        if (Input.IsActionJustPressed("ui_cancel"))
+        {
+            if (Input.GetMouseMode() == Input.MouseModeEnum.Visible)
+            {
+                Input.SetMouseMode(Input.MouseModeEnum.Captured);
+            }
+            else
+            {
+                Input.SetMouseMode(Input.MouseModeEnum.Captured);
+            }
+        }
     }
 
     public override void _UnhandledInput(InputEvent @event)
