@@ -69,17 +69,29 @@ public partial class Player : CharacterBody3D
 		MoveAndSlide();
 
 		//Cameras
-		RotateY(-camera_input.X * look_sensivity);
-		camera.RotateX(-camera_input.Y * look_sensivity);
-		camera.Rotation = new Vector3((float)Mathf.Clamp(camera.Rotation.X, -1.5, 1.5), 0, 0);
-		camera_input.Y = 0;
+		if (Input.GetMouseMode() == Input.MouseModeEnum.Captured)
+		{
+			// Yaw (horizontal)
+			RotateY(-camera_input.X * look_sensivity);
+
+			// Pitch (vertikal)
+			camera.RotateX(-camera_input.Y * look_sensivity);
+
+			// Vertikalen Winkel clampen
+			var rotation = camera.Rotation;
+			rotation.X = Mathf.Clamp(rotation.X, -1.5f, 1.5f);
+			camera.Rotation = rotation;
+
+			// Mausinput zurücksetzen
+			camera_input = Vector2.Zero;
+		}
 		
 		//Mouse
 		if (Input.IsActionJustPressed("ui_cancel"))
 		{
-			if (Input.GetMouseMode() == Input.MouseModeEnum.Visible)
+			if (Input.GetMouseMode() == Input.MouseModeEnum.Captured)
 			{
-				Input.SetMouseMode(Input.MouseModeEnum.Captured);
+				Input.SetMouseMode(Input.MouseModeEnum.Visible);
 			}
 			else
 			{

@@ -72,11 +72,12 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.977873, 0)
 script = ExtResource("5_kry3j")
 max_speed = 3.0
 max_run_speed = 6.0
-acceleration = 1.0
+acceleration = 2.0
 braking = 1.0
 air_acceleration = 1.0
-jump_force = 1.0
+jump_force = 2.0
 gravity_modifier = 1.0
+look_sensivity = 0.01
 camera = NodePath("Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
