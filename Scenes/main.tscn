@@ -61,9 +61,23 @@ transform = Transform3D(1, 0, 0, 0, 0.817859, -0.575419, 0, 0.575419, 0.817859, 
 [node name="Rock" parent="." instance=ExtResource("4_jjvhh")]
 transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, -0.948728, -0.374398, 13.114)
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+[node name="OmniLight3D" type="OmniLight3D" parent="Rock"]
+transform = Transform3D(0.0646309, 0, 0, 0, -0.2, 0, 0, 0, 0.2, 0, 0.986582, 0)
+light_color = Color(0.766071, 0.12794, 1.92523e-07, 1)
+light_energy = 5.525
+omni_range = 1.11765
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="." node_paths=PackedStringArray("camera")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.977873, 0)
 script = ExtResource("5_kry3j")
+max_speed = 3.0
+max_run_speed = 6.0
+acceleration = 1.0
+braking = 1.0
+air_acceleration = 1.0
+jump_force = 1.0
+gravity_modifier = 1.0
+camera = NodePath("Camera3D")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
 shape = SubResource("CapsuleShape3D_jjvhh")
@@ -71,8 +85,9 @@ shape = SubResource("CapsuleShape3D_jjvhh")
 [node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.568674, 0)
 
-[node name="InteractionController" type="RayCast3D" parent="CharacterBody3D"]
+[node name="InteractionController" type="RayCast3D" parent="CharacterBody3D" node_paths=PackedStringArray("interaction_label")]
 script = ExtResource("6_21xkr")
+interaction_label = NodePath("InteractionPrompt")
 
 [node name="InteractionPrompt" type="Label" parent="CharacterBody3D/InteractionController"]
 anchors_preset = 8

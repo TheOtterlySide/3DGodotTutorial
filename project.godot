@@ -11,7 +11,8 @@ config_version=5
 [application]
 
 config/name="3D Tutorial"
-config/features=PackedStringArray("4.4", "C#")
+run/main_scene="uid://cy3wmo2s8p1rw"
+config/features=PackedStringArray("4.5", "C#")
 config/icon="res://icon.svg"
 
 [dotnet]
